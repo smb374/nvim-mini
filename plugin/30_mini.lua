@@ -34,7 +34,7 @@ local now_if_args = Config.now_if_args
 -- - `:h mini.nvim-color-schemes` - list of other color schemes
 -- - `:h MiniHues-examples` - how to define highlighting with 'mini.hues'
 -- - 'plugin/40_plugins.lua' honorable mentions - other good color schemes
-now(function() vim.cmd('colorscheme miniwinter') end)
+-- now(function() vim.cmd('colorscheme miniwinter') end)
 
 -- You can try these other 'mini.hues'-based color schemes (uncomment with `gcc`):
 -- now(function() vim.cmd('colorscheme minispring') end)
@@ -258,7 +258,7 @@ now_if_args(function()
 
   -- Synchronize terminal emulator background with Neovim's background to remove
   -- possibly different color padding around Neovim instance
-  MiniMisc.setup_termbg_sync()
+  -- MiniMisc.setup_termbg_sync()
 end)
 
 -- Step two ===================================================================
@@ -406,6 +406,13 @@ later(function()
       { mode = { 'n', 'x' }, keys = 's' },        -- `s` key (mini.surround, etc.)
       { mode = { 'n', 'x' }, keys = 'z' },        -- `z` key
     },
+    window = {
+      delay = 50,
+      config = {
+        width = "auto",
+        border = "single",
+      },
+    },
   })
 end)
 
@@ -511,7 +518,43 @@ end)
 --
 -- See also:
 -- - `:h MiniIndentscope.gen_animation` - available animation rules
-later(function() require('mini.indentscope').setup() end)
+later(function()
+  -- Disable indentscope on some buffers.
+  vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("config_disable_indentscope", {clear = true}),
+    pattern = {
+      "alpha",
+      "coc-explorer",
+      "dashboard",
+      "fzf", -- fzf-lua
+      "help",
+      "lazy",
+      "lazyterm",
+      "lspsagafinder",
+      "mason",
+      "neo-tree",
+      "nnn",
+      "notify",
+      "NvimTree",
+      "qf",
+      "toggleterm",
+      "Trouble",
+    },
+    callback = function(_)
+      vim.b.miniindentscope_disable = true
+    end,
+  })
+
+  local indentscope = require('mini.indentscope')
+  indentscope.setup({
+    draw = {
+      delay = 50,
+      animation = indentscope.gen_animation.none(),
+    },
+    symbol = "│",
+    options = { try_as_border = true },
+  })
+end)
 
 -- Jump to next/previous single character. It implements "smarter `fFtT` keys"
 -- (see `:h f`) that work across multiple lines, start "jumping mode", and

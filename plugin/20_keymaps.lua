@@ -14,6 +14,14 @@ local nmap = function(lhs, rhs, desc)
   vim.keymap.set('n', lhs, rhs, { desc = desc })
 end
 
+local map = vim.keymap.set
+
+map("v", "<", "<gv")
+map("v", ">", ">gv")
+
+map("n", "<M-left>", "<cmd>bp<cr>", { desc = "Previous Buffer" })
+map("n", "<M-right>", "<cmd>bn<cr>", { desc = "Next Buffer" })
+
 -- Paste linewise before/after current line
 -- Usage: `yiw` to yank a word and `]p` to put it on the next line.
 nmap('[p', '<Cmd>exe "put! " . v:register<CR>', 'Paste Above')

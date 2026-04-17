@@ -9,7 +9,7 @@
 -- Use this file to install and configure other such plugins.
 
 -- Make concise helpers for installing/adding plugins in two stages
-local add, later = MiniDeps.add, MiniDeps.later
+local now, add, later = MiniDeps.now, MiniDeps.add, MiniDeps.later
 local now_if_args = Config.now_if_args
 
 -- Tree-sitter ================================================================
@@ -48,26 +48,15 @@ now_if_args(function()
   -- Define languages which will have parsers installed and auto enabled
   -- After changing this, restart Neovim once to install necessary parsers. Wait
   -- for the installation to finish before opening a file for added language(s).
-  local languages = {
-    -- These are already pre-installed with Neovim. Used as an example.
-    'lua',
-    'vimdoc',
-    'markdown',
-    -- Add here more languages with which you want to use tree-sitter
-    -- To see available languages:
-    -- - Execute `:=require('nvim-treesitter').get_available()`
-    -- - Visit 'SUPPORTED_LANGUAGES.md' file at
-    --   https://github.com/nvim-treesitter/nvim-treesitter
-  }
   local isnt_installed = function(lang)
     return #vim.api.nvim_get_runtime_file('parser/' .. lang .. '.*', false) == 0
   end
-  local to_install = vim.tbl_filter(isnt_installed, languages)
+  local to_install = vim.tbl_filter(isnt_installed, Config.install_ts)
   if #to_install > 0 then require('nvim-treesitter').install(to_install) end
 
   -- Enable tree-sitter after opening a file for a target language
   local filetypes = {}
-  for _, lang in ipairs(languages) do
+  for _, lang in ipairs(Config.install_ts) do
     for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
       table.insert(filetypes, ft)
     end
@@ -92,8 +81,76 @@ end)
 --
 -- Add it now if file (and not 'mini.starter') is shown after startup.
 now_if_args(function()
-  add('neovim/nvim-lspconfig')
+  add('folke/lazydev.nvim')
+  add('williamboman/mason.nvim')
+  add('williamboman/mason-lspconfig.nvim')
+  add({
+    source = 'neovim/nvim-lspconfig',
+    depends = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+    },
+  })
 
+  require('lazydev').setup({
+    library = {
+      -- See the configuration section for more details
+      -- Load luvit types when the `vim.uv` word is found
+      { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+    },
+  })
+
+  local capabilities = {
+    textDocument = {
+      foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true,
+      },
+      completion = {
+        completionItem = {
+          snippetSupport = true,
+          commitCharactersSupport = true,
+          deprecatedSupport = true,
+          preselectSupport = true,
+          tagSupport = { valueSet = { 1 } },
+          insertReplaceSupport = true,
+          resolveSupport = {
+            properties = {
+              "documentation",
+              "detail",
+              "additionalTextEdits",
+            },
+          },
+          labelDetailsSupport = true,
+        },
+      },
+    },
+  }
+  vim.lsp.config("*", {
+    capabilities = capabilities,
+    root_markers = { ".git" },
+  })
+  require('mason').setup({
+    ui = {
+      icons = {
+        package_installed = "✓",
+        package_pending = "➜",
+        package_uninstalled = "✗",
+      },
+    },
+  })
+  require('mason-lspconfig').setup({
+    ensure_installed = Config.install_server,
+    automatic_enable = true,
+    automatic_installation = false,
+  })
+
+  for _, server in ipairs(Config.external_server) do
+    vim.lsp.config(server, {
+      capabilities = capabilities,
+    })
+    vim.lsp.enable(server)
+  end
   -- Use `:h vim.lsp.enable()` to automatically enable language server based on
   -- the rules provided by 'nvim-lspconfig'.
   -- Use `:h vim.lsp.config()` or 'after/lsp/' directory to configure servers.
@@ -158,12 +215,50 @@ later(function() add('rafamadriz/friendly-snippets') end)
 -- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
 -- have full support of its highlight groups. Use if you don't like 'miniwinter'
 -- enabled in 'plugin/30_mini.lua' or other suggested 'mini.hues' based ones.
--- MiniDeps.now(function()
---   -- Install only those that you need
---   add('sainnhe/everforest')
---   add('Shatur/neovim-ayu')
---   add('ellisonleao/gruvbox.nvim')
---
---   -- Enable only one
---   vim.cmd('color everforest')
--- end)
+now(function()
+  add({
+    source="catppuccin/nvim",
+    name="catppuccin",
+  })
+  require("catppuccin").setup({
+    term_colors = true,
+    integrations = {
+      aerial = true,
+      alpha = true,
+      cmp = true,
+      dashboard = true,
+      flash = true,
+      gitsigns = true,
+      headlines = true,
+      illuminate = true,
+      indent_blankline = { enabled = true },
+      leap = true,
+      lsp_trouble = true,
+      mason = true,
+      markdown = true,
+      mini = {
+        enabled = true,
+      },
+      native_lsp = {
+        enabled = true,
+        underlines = {
+          errors = { "undercurl" },
+          hints = { "undercurl" },
+          warnings = { "undercurl" },
+          information = { "undercurl" },
+        },
+      },
+      navic = { enabled = true, custom_bg = "lualine" },
+      neotest = true,
+      neotree = true,
+      noice = true,
+      notify = true,
+      semantic_tokens = true,
+      telescope = true,
+      treesitter = true,
+      treesitter_context = true,
+      which_key = true,
+    },
+  })
+  vim.cmd.colorscheme("catppuccin")
+end)
