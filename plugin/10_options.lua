@@ -173,7 +173,6 @@ Config.install_ts = {
   'javascript',
   'json',
   'json5',
-  'jsonc',
   'kdl',
   'latex',
   'lua',
