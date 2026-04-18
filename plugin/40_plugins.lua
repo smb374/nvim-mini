@@ -91,12 +91,18 @@ now_if_args(function()
       'williamboman/mason-lspconfig.nvim',
     },
   })
+  add({
+    source = 'MysticalDevil/inlay-hints.nvim',
+    depends = {
+      'neovim/nvim-lspconfig',
+    },
+  })
 
   require('lazydev').setup({
     library = {
       -- See the configuration section for more details
       -- Load luvit types when the `vim.uv` word is found
-      { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
     },
   })
 
@@ -116,9 +122,9 @@ now_if_args(function()
           insertReplaceSupport = true,
           resolveSupport = {
             properties = {
-              "documentation",
-              "detail",
-              "additionalTextEdits",
+              'documentation',
+              'detail',
+              'additionalTextEdits',
             },
           },
           labelDetailsSupport = true,
@@ -126,23 +132,22 @@ now_if_args(function()
       },
     },
   }
-  vim.lsp.config("*", {
+  vim.lsp.config('*', {
     capabilities = capabilities,
-    root_markers = { ".git" },
+    root_markers = { '.git' },
   })
   require('mason').setup({
     ui = {
       icons = {
-        package_installed = "✓",
-        package_pending = "➜",
-        package_uninstalled = "✗",
+        package_installed = '✓',
+        package_pending = '➜',
+        package_uninstalled = '✗',
       },
     },
   })
   require('mason-lspconfig').setup({
     ensure_installed = Config.install_server,
     automatic_enable = true,
-    automatic_installation = false,
   })
 
   for _, server in ipairs(Config.external_server) do
@@ -151,13 +156,8 @@ now_if_args(function()
     })
     vim.lsp.enable(server)
   end
-  -- Use `:h vim.lsp.enable()` to automatically enable language server based on
-  -- the rules provided by 'nvim-lspconfig'.
-  -- Use `:h vim.lsp.config()` or 'after/lsp/' directory to configure servers.
-  -- Uncomment and tweak the following `vim.lsp.enable()` call to enable servers.
-  -- vim.lsp.enable({
-  --   -- For example, if `lua-language-server` is installed, use `'lua_ls'` entry
-  -- })
+
+  require('inlay-hints').setup()
 end)
 
 -- Formatting =================================================================
@@ -211,7 +211,7 @@ later(function() add('rafamadriz/friendly-snippets') end)
 --   add('mason-org/mason.nvim')
 --   require('mason').setup()
 -- end)
-later(function ()
+later(function()
   add({
     source = 'NeogitOrg/neogit',
     depends = {
@@ -220,8 +220,8 @@ later(function ()
     },
   })
 
-  require("neogit").setup()
-  vim.keymap.set('n', '<leader>gg', '<cmd>Neogit<cr>', {desc = "Open Neogit"})
+  require('neogit').setup({})
+  vim.keymap.set('n', '<leader>gg', '<cmd>Neogit<cr>', { desc = 'Open Neogit' })
 end)
 
 -- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
@@ -229,10 +229,17 @@ end)
 -- enabled in 'plugin/30_mini.lua' or other suggested 'mini.hues' based ones.
 now(function()
   add({
-    source="catppuccin/nvim",
-    name="catppuccin",
+    source = 'utilyre/barbecue.nvim',
+    name = 'barbecue',
+    depends = {
+      'SmiteshP/nvim-navic'
+    },
   })
-  require("catppuccin").setup({
+  add({
+    source = 'catppuccin/nvim',
+    name = 'catppuccin',
+  })
+  require('catppuccin').setup({
     term_colors = true,
     integrations = {
       aerial = true,
@@ -254,13 +261,13 @@ now(function()
       native_lsp = {
         enabled = true,
         underlines = {
-          errors = { "undercurl" },
-          hints = { "undercurl" },
-          warnings = { "undercurl" },
-          information = { "undercurl" },
+          errors = { 'undercurl' },
+          hints = { 'undercurl' },
+          warnings = { 'undercurl' },
+          information = { 'undercurl' },
         },
       },
-      navic = { enabled = true, custom_bg = "lualine" },
+      navic = { enabled = true, custom_bg = 'lualine' },
       neotest = true,
       neotree = true,
       noice = true,
@@ -272,5 +279,7 @@ now(function()
       which_key = true,
     },
   })
-  vim.cmd.colorscheme("catppuccin")
+  vim.cmd.colorscheme('catppuccin')
+
+  require('barbecue').setup()
 end)
