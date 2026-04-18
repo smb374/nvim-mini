@@ -393,16 +393,16 @@ later(function()
     -- Explicitly opt-in for set of common keys to trigger clue window
     triggers = {
       { mode = { 'n', 'x' }, keys = '<Leader>' }, -- Leader triggers
-      { mode =   'n',        keys = '\\' },       -- mini.basics
+      { mode = 'n',          keys = '\\' },       -- mini.basics
       { mode = { 'n', 'x' }, keys = '[' },        -- mini.bracketed
       { mode = { 'n', 'x' }, keys = ']' },
-      { mode =   'i',        keys = '<C-x>' },    -- Built-in completion
+      { mode = 'i',          keys = '<C-x>' },    -- Built-in completion
       { mode = { 'n', 'x' }, keys = 'g' },        -- `g` key
       { mode = { 'n', 'x' }, keys = "'" },        -- Marks
       { mode = { 'n', 'x' }, keys = '`' },
       { mode = { 'n', 'x' }, keys = '"' },        -- Registers
       { mode = { 'i', 'c' }, keys = '<C-r>' },
-      { mode =   'n',        keys = '<C-w>' },    -- Window commands
+      { mode = 'n',          keys = '<C-w>' },    -- Window commands
       { mode = { 'n', 'x' }, keys = 's' },        -- `s` key (mini.surround, etc.)
       { mode = { 'n', 'x' }, keys = 'z' },        -- `z` key
     },
@@ -521,7 +521,7 @@ end)
 later(function()
   -- Disable indentscope on some buffers.
   vim.api.nvim_create_autocmd("FileType", {
-    group = vim.api.nvim_create_augroup("config_disable_indentscope", {clear = true}),
+    group = vim.api.nvim_create_augroup("config_disable_indentscope", { clear = true }),
     pattern = {
       "alpha",
       "coc-explorer",
@@ -625,9 +625,9 @@ later(function()
   -- Map built-in navigation characters to force map refresh
   for _, key in ipairs({ 'n', 'N', '*', '#' }) do
     local rhs = key
-      -- Also open enough folds when jumping to the next match
-      .. 'zv'
-      .. '<Cmd>lua MiniMap.refresh({}, { lines = false, scrollbar = false })<CR>'
+        -- Also open enough folds when jumping to the next match
+        .. 'zv'
+        .. '<Cmd>lua MiniMap.refresh({}, { lines = false, scrollbar = false })<CR>'
     vim.keymap.set('n', key, rhs)
   end
 end)

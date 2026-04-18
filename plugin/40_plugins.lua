@@ -106,7 +106,10 @@ now_if_args(function()
     },
   })
 
-  local capabilities = {
+  local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(),
+    MiniCompletion.get_lsp_capabilities())
+
+  capabilities = vim.tbl_deep_extend('force', capabilities, {
     textDocument = {
       foldingRange = {
         dynamicRegistration = false,
@@ -131,7 +134,8 @@ now_if_args(function()
         },
       },
     },
-  }
+  })
+
   vim.lsp.config('*', {
     capabilities = capabilities,
     root_markers = { '.git' },
@@ -183,6 +187,12 @@ later(function()
     -- Map of filetype to formatters
     -- Make sure that necessary CLI tool is available
     -- formatters_by_ft = { lua = { 'stylua' } },
+  })
+  vim.api.nvim_create_autocmd('BufWritePre', {
+    pattern = '*',
+    callback = function(args)
+      require('conform').format({ bufnr = args.buf })
+    end
   })
 end)
 
@@ -282,4 +292,52 @@ now(function()
   vim.cmd.colorscheme('catppuccin')
 
   require('barbecue').setup()
+end)
+
+later(function()
+  add('ahmedkhalf/project.nvim')
+
+  require('project_nvim').setup({
+    manual_mode = false,
+    detection_methods = { "lsp", "pattern" },
+    patterns = {
+      ".git",
+      "_darcs",
+      ".hg",
+      ".bzr",
+      ".svn",
+      "Makefile",
+      "package.json",
+      "mix.lock"
+    },
+    ignore_lsp = {},
+    exclude_dirs = {},
+    show_hidden = false,
+    silent_chdir = true,
+    scope_chdir = "global",
+    datapath = vim.fn.stdpath("data"),
+  })
+  require('project_nvim.utils.history').read_projects_from_history()
+
+  vim.keymap.set('n', '<leader>pp', function()
+    local history = require("project_nvim.utils.history")
+    local pick = require("mini.pick")
+    local function choose_action(item)
+      if not vim.fn.isdirectory(item) then
+        return
+      end
+      pick.builtin.files({}, {
+        source = {
+          cwd = item,
+        },
+      })
+    end
+    pick.start({
+      source = {
+        items = history.get_recent_projects(),
+        choose = choose_action,
+        name = "Projects"
+      }
+    })
+  end, { desc = 'Pick Project' })
 end)

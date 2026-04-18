@@ -26,7 +26,8 @@ vim.o.mouse         = 'a'            -- Enable mouse
 vim.o.mousescroll   = 'ver:25,hor:6' -- Customize mouse scroll
 vim.o.switchbuf     = 'usetab'       -- Use already opened buffers when switching
 vim.o.undofile      = true           -- Enable persistent undo
-vim.o.clipboard     = 'unnamedplus'
+vim.o.clipboard     = 'unnamedplus'  -- Use system clipboard
+vim.o.updatetime    = 1000
 
 vim.o.termguicolors = true
 
@@ -48,7 +49,9 @@ vim.o.pumheight      = 10                  -- Make popup menu smaller
 vim.o.ruler          = false               -- Don't show cursor coordinates
 vim.o.shortmess      = 'CFOSWaco'          -- Disable some built-in completion messages
 vim.o.showmode       = false               -- Don't show mode in command line
+vim.o.sidescrolloff  = 8
 vim.o.signcolumn     = 'yes'               -- Always show signcolumn (less flicker)
+vim.o.smoothscroll   = true
 vim.o.splitbelow     = true                -- Horizontal splits will be below
 vim.o.splitkeep      = 'screen'            -- Reduce scroll during window split
 vim.o.splitright     = true                -- Vertical splits will be to the right
