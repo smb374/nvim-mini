@@ -87,6 +87,13 @@ local xmap_leader = function(suffix, rhs, desc)
   vim.keymap.set('x', '<Leader>' .. suffix, rhs, { desc = desc })
 end
 
+nmap_leader('|', '<cmd>vs<cr>', 'Split Horizontal')
+nmap_leader('-', '<cmd>hs<cr>', 'Split Vertical')
+nmap_leader('<up>', '<C-W>k', 'Go up')
+nmap_leader('<down>', '<C-W>j', 'Go down')
+nmap_leader('<left>', '<C-W>h', 'Go left')
+nmap_leader('<right>', '<C-W>l', 'Go down')
+
 -- b is for 'Buffer'. Common usage:
 -- - `<Leader>bs` - create scratch (temporary) buffer
 -- - `<Leader>ba` - navigate to the alternative buffer
