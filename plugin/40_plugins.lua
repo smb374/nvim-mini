@@ -341,3 +341,14 @@ later(function()
     })
   end, { desc = 'Pick Project' })
 end)
+
+later(function()
+  add({
+    source = "nvzone/floaterm",
+    depends = {
+      "nvzone/volt",
+    },
+  })
+
+  Config.nmap("<C-_>", "<cmd>FloatermToggle<cr>", "Open floating terminal")
+end)

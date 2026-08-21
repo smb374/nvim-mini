@@ -9,25 +9,20 @@
 -- Use this section to add custom general mappings. See `:h vim.keymap.set()`.
 
 -- An example helper to create a Normal mode mapping
-local nmap = function(lhs, rhs, desc)
-  -- See `:h vim.keymap.set()`
-  vim.keymap.set('n', lhs, rhs, { desc = desc })
-end
+Config.map("v", "<", "<gv")
+Config.map("v", ">", ">gv")
 
-local map = vim.keymap.set
+Config.map("n", "<M-left>", "<cmd>bp<cr>", { desc = "Previous Buffer" })
+Config.map("n", "<M-right>", "<cmd>bn<cr>", { desc = "Next Buffer" })
 
-map("v", "<", "<gv")
-map("v", ">", ">gv")
+Config.map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
 
-map("n", "<M-left>", "<cmd>bp<cr>", { desc = "Previous Buffer" })
-map("n", "<M-right>", "<cmd>bn<cr>", { desc = "Next Buffer" })
-
-map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
+Config.map("t", "<Esc>", "<C-\\><C-n>", { desc = "Escape terminal mode with Esc" })
 
 -- Paste linewise before/after current line
 -- Usage: `yiw` to yank a word and `]p` to put it on the next line.
-nmap('[p', '<Cmd>exe "put! " . v:register<CR>', 'Paste Above')
-nmap(']p', '<Cmd>exe "put "  . v:register<CR>', 'Paste Below')
+Config.nmap('[p', '<Cmd>exe "put! " . v:register<CR>', 'Paste Above')
+Config.nmap(']p', '<Cmd>exe "put "  . v:register<CR>', 'Paste Below')
 
 -- Many general mappings are created by 'mini.basics'. See 'plugin/30_mini.lua'
 

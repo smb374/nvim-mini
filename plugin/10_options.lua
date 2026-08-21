@@ -129,6 +129,17 @@ local diagnostic_opts = {
 
 -- Use `later()` to avoid sourcing `vim.diagnostic` on startup
 MiniDeps.later(function() vim.diagnostic.config(diagnostic_opts) end)
+
+Config.new_autocmd({ "CursorHold" }, nil, function()
+  local opts = {
+    focusable = false,
+    scope = "cursor",
+    close_events = { "BufLeave", "CursorMoved", "InsertEnter" }
+  }
+  if vim.diagnostic.is_enabled() then
+    vim.diagnostic.open_float(nil, opts)
+  end
+end, "Diagnostics on float")
 -- stylua: ignore end
 
 Config.external_server = {

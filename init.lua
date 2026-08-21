@@ -86,6 +86,10 @@ end
 -- Some plugins and 'mini.nvim' modules only need setup during startup if Neovim
 -- is started like `nvim -- path/to/file`, otherwise delaying setup is fine
 Config.now_if_args = vim.fn.argc(-1) > 0 and MiniDeps.now or MiniDeps.later
+Config.map = vim.keymap.set
+Config.nmap = function(lhs, rhs, desc)
+  vim.keymap.set("n", lhs, rhs, { desc = desc })
+end
 
 if vim.g.neovide then
   vim.o.guifont = "Maple Mono NL NF CN:h12"
