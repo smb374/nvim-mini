@@ -153,6 +153,7 @@ Config.external_server = {
 }
 
 Config.install_server = {
+  'bashls',
   'cssls',
   'elixirls',
   'jsonls',
@@ -173,6 +174,7 @@ Config.install_server = {
 }
 
 Config.install_ts = {
+  'bash',
   'bibtex',
   'css',
   'elixir',
@@ -209,4 +211,5 @@ Config.install_ts = {
   'vimdoc',
   'yaml',
   'zig',
+  'zsh',
 }
