@@ -374,3 +374,14 @@ later(function()
 
   Config.nmap("<C-_>", "<cmd>FloatermToggle<cr>", "Open floating terminal")
 end)
+
+later(function ()
+  add({
+    source = "MeanderingProgrammer/render-markdown.nvim",
+    depends = {"nvim-treesitter/nvim-treesitter"},
+  })
+
+  require("render-markdown").setup({
+    completions = { lsp = { enabled = true } },
+  })
+end)
