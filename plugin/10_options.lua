@@ -158,7 +158,7 @@ Config.install_server = {
   'elixirls',
   'jsonls',
   'lua_ls',
-  'markdown_oxide',
+  'marksman',
   'mesonlsp',
   'ols',
   'pyright',
