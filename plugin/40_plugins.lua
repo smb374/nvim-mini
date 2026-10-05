@@ -19,40 +19,40 @@ local now_if_args = Config.now_if_args
 -- and/or more precise actions: syntax highlighting, textobjects, indent, etc.
 --
 -- Tree-sitter support is built into Neovim (see `:h treesitter`). However, it
--- requires two extra pieces that don't come with Neovim directly:
+-- requires two extra pieces that don"t come with Neovim directly:
 -- - Language parsers: programs that convert text into trees. Some are built-in
---   (like for Lua), 'nvim-treesitter' provides many others.
+--   (like for Lua), "nvim-treesitter" provides many others.
 --   NOTE: It requires third party software to build and install parsers.
 --   See the link for more info in "Requirements" section of the MiniMax README.
 -- - Query files: definitions of how to extract information from trees in
---   a useful manner (see `:h treesitter-query`). 'nvim-treesitter' also provides
---   these, while 'nvim-treesitter-textobjects' provides the ones for Neovim
+--   a useful manner (see `:h treesitter-query`). "nvim-treesitter" also provides
+--   these, while "nvim-treesitter-textobjects" provides the ones for Neovim
 --   textobjects (see `:h text-objects`, `:h MiniAi.gen_spec.treesitter()`).
 --
--- Add these plugins now if file (and not 'mini.starter') is shown after startup.
+-- Add these plugins now if file (and not "mini.starter") is shown after startup.
 --
 -- Troubleshooting:
 -- - Run `:checkhealth vim.treesitter nvim-treesitter` to see potential issues.
 -- - In case of errors related to queries for Neovim bundled parsers (like `lua`,
---   `vimdoc`, `markdown`, etc.), manually install them via 'nvim-treesitter'
+--   `vimdoc`, `markdown`, etc.), manually install them via "nvim-treesitter"
 --   with `:TSInstall <language>`. Be sure to have necessary system dependencies
 --   (see MiniMax README section for software requirements).
 now_if_args(function()
   add({
-    source = 'nvim-treesitter/nvim-treesitter',
+    source = "nvim-treesitter/nvim-treesitter",
     -- Update tree-sitter parser after plugin is updated
-    hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
+    hooks = { post_checkout = function() vim.cmd("TSUpdate") end },
   })
-  add('nvim-treesitter/nvim-treesitter-textobjects')
+  add("nvim-treesitter/nvim-treesitter-textobjects")
 
   -- Define languages which will have parsers installed and auto enabled
   -- After changing this, restart Neovim once to install necessary parsers. Wait
   -- for the installation to finish before opening a file for added language(s).
   local isnt_installed = function(lang)
-    return #vim.api.nvim_get_runtime_file('parser/' .. lang .. '.*', false) == 0
+    return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
   end
   local to_install = vim.tbl_filter(isnt_installed, Config.install_ts)
-  if #to_install > 0 then require('nvim-treesitter').install(to_install) end
+  if #to_install > 0 then require("nvim-treesitter").install(to_install) end
 
   -- Enable tree-sitter after opening a file for a target language
   local filetypes = {}
@@ -62,7 +62,7 @@ now_if_args(function()
     end
   end
   local ts_start = function(ev) vim.treesitter.start(ev.buf) end
-  Config.new_autocmd('FileType', filetypes, ts_start, 'Start tree-sitter')
+  Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
 end)
 
 -- Language servers ===========================================================
@@ -74,42 +74,42 @@ end)
 --
 -- Here Neovim itself is a client (see `:h vim.lsp`). Language servers need to
 -- be installed separately based on your OS, CLI tools, and preferences.
--- See note about 'mason.nvim' at the bottom of the file.
+-- See note about "mason.nvim" at the bottom of the file.
 --
--- Neovim's team collects commonly used configurations for most language servers
--- inside 'neovim/nvim-lspconfig' plugin.
+-- Neovim"s team collects commonly used configurations for most language servers
+-- inside "neovim/nvim-lspconfig" plugin.
 --
--- Add it now if file (and not 'mini.starter') is shown after startup.
+-- Add it now if file (and not "mini.starter") is shown after startup.
 now_if_args(function()
-  add('folke/lazydev.nvim')
-  add('williamboman/mason.nvim')
-  add('williamboman/mason-lspconfig.nvim')
+  add("folke/lazydev.nvim")
+  add("williamboman/mason.nvim")
+  add("williamboman/mason-lspconfig.nvim")
   add({
-    source = 'neovim/nvim-lspconfig',
+    source = "neovim/nvim-lspconfig",
     depends = {
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
     },
   })
   add({
-    source = 'MysticalDevil/inlay-hints.nvim',
+    source = "MysticalDevil/inlay-hints.nvim",
     depends = {
-      'neovim/nvim-lspconfig',
+      "neovim/nvim-lspconfig",
     },
   })
 
-  require('lazydev').setup({
+  require("lazydev").setup({
     library = {
       -- See the configuration section for more details
       -- Load luvit types when the `vim.uv` word is found
-      { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      { path = "${3rd}/luv/library", words = { "vim%.uv" } },
     },
   })
 
-  local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(),
+  local capabilities = vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(),
     MiniCompletion.get_lsp_capabilities())
 
-  capabilities = vim.tbl_deep_extend('force', capabilities, {
+  capabilities = vim.tbl_deep_extend("force", capabilities, {
     textDocument = {
       foldingRange = {
         dynamicRegistration = false,
@@ -125,9 +125,9 @@ now_if_args(function()
           insertReplaceSupport = true,
           resolveSupport = {
             properties = {
-              'documentation',
-              'detail',
-              'additionalTextEdits',
+              "documentation",
+              "detail",
+              "additionalTextEdits",
             },
           },
           labelDetailsSupport = true,
@@ -136,20 +136,20 @@ now_if_args(function()
     },
   })
 
-  vim.lsp.config('*', {
+  vim.lsp.config("*", {
     capabilities = capabilities,
-    root_markers = { '.git' },
+    root_markers = { ".git" },
   })
-  require('mason').setup({
+  require("mason").setup({
     ui = {
       icons = {
-        package_installed = '✓',
-        package_pending = '➜',
-        package_uninstalled = '✗',
+        package_installed = "✓",
+        package_pending = "➜",
+        package_uninstalled = "✗",
       },
     },
   })
-  require('mason-lspconfig').setup({
+  require("mason-lspconfig").setup({
     ensure_installed = Config.install_server,
     automatic_enable = true,
   })
@@ -161,32 +161,32 @@ now_if_args(function()
     vim.lsp.enable(server)
   end
 
-  require('inlay-hints').setup()
+  require("inlay-hints").setup()
 end)
 
 -- Formatting =================================================================
 
 -- Programs dedicated to text formatting (a.k.a. formatters) are very useful.
--- Neovim has built-in tools for text formatting (see `:h gq` and `:h 'formatprg'`).
+-- Neovim has built-in tools for text formatting (see `:h gq` and `:h "formatprg"`).
 -- They can be used to configure external programs, but it might become tedious.
 --
--- The 'stevearc/conform.nvim' plugin is a good and maintained solution for easier
+-- The "stevearc/conform.nvim" plugin is a good and maintained solution for easier
 -- formatting setup.
 later(function()
-  add('stevearc/conform.nvim')
+  add("stevearc/conform.nvim")
 
   -- See also:
   -- - `:h Conform`
   -- - `:h conform-options`
   -- - `:h conform-formatters`
-  require('conform').setup({
+  require("conform").setup({
     default_format_opts = {
       -- Allow formatting from LSP server if no dedicated formatter is available
-      lsp_format = 'fallback',
+      lsp_format = "fallback",
     },
     -- Map of filetype to formatters
     -- Make sure that necessary CLI tool is available
-    -- formatters_by_ft = { lua = { 'stylua' } },
+    -- formatters_by_ft = { lua = { "stylua" } },
   })
   vim.api.nvim_create_user_command("Format", function(args)
     local range = nil
@@ -220,18 +220,18 @@ end)
 
 -- Snippets ===================================================================
 
--- Although 'mini.snippets' provides functionality to manage snippet files, it
--- deliberately doesn't come with those.
+-- Although "mini.snippets" provides functionality to manage snippet files, it
+-- deliberately doesn"t come with those.
 --
--- The 'rafamadriz/friendly-snippets' is currently the largest collection of
--- snippet files. They are organized in 'snippets/' directory (mostly) per language.
--- 'mini.snippets' is designed to work with it as seamlessly as possible.
+-- The "rafamadriz/friendly-snippets" is currently the largest collection of
+-- snippet files. They are organized in "snippets/" directory (mostly) per language.
+-- "mini.snippets" is designed to work with it as seamlessly as possible.
 -- See `:h MiniSnippets.gen_loader.from_lang()`.
-later(function() add('rafamadriz/friendly-snippets') end)
+later(function() add("rafamadriz/friendly-snippets") end)
 
 -- Honorable mentions =========================================================
 
--- 'mason-org/mason.nvim' (a.k.a. "Mason") is a great tool (package manager) for
+-- "mason-org/mason.nvim" (a.k.a. "Mason") is a great tool (package manager) for
 -- installing external language servers, formatters, and linters. It provides
 -- a unified interface for installing, updating, and deleting such programs.
 --
@@ -240,38 +240,38 @@ later(function() add('rafamadriz/friendly-snippets') end)
 --
 -- You can use it like so:
 -- now_if_args(function()
---   add('mason-org/mason.nvim')
---   require('mason').setup()
+--   add("mason-org/mason.nvim")
+--   require("mason").setup()
 -- end)
 later(function()
   add({
-    source = 'NeogitOrg/neogit',
+    source = "NeogitOrg/neogit",
     depends = {
-      'nvim-lua/plenary.nvim',
-      'sindrets/diffview.nvim',
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
     },
   })
 
-  require('neogit').setup({})
-  vim.keymap.set('n', '<leader>gg', '<cmd>Neogit<cr>', { desc = 'Open Neogit' })
+  require("neogit").setup({})
+  Config.nmap("<leader>gg", "<cmd>Neogit<cr>", "Open Neogit")
 end)
 
--- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
--- have full support of its highlight groups. Use if you don't like 'miniwinter'
--- enabled in 'plugin/30_mini.lua' or other suggested 'mini.hues' based ones.
+-- Beautiful, usable, well maintained color schemes outside of "mini.nvim" and
+-- have full support of its highlight groups. Use if you don"t like "miniwinter"
+-- enabled in "plugin/30_mini.lua" or other suggested "mini.hues" based ones.
 now(function()
   add({
-    source = 'utilyre/barbecue.nvim',
-    name = 'barbecue',
+    source = "utilyre/barbecue.nvim",
+    name = "barbecue",
     depends = {
-      'SmiteshP/nvim-navic'
+      "SmiteshP/nvim-navic"
     },
   })
   add({
-    source = 'catppuccin/nvim',
-    name = 'catppuccin',
+    source = "catppuccin/nvim",
+    name = "catppuccin",
   })
-  require('catppuccin').setup({
+  require("catppuccin").setup({
     term_colors = true,
     integrations = {
       aerial = true,
@@ -293,13 +293,13 @@ now(function()
       native_lsp = {
         enabled = true,
         underlines = {
-          errors = { 'undercurl' },
-          hints = { 'undercurl' },
-          warnings = { 'undercurl' },
-          information = { 'undercurl' },
+          errors = { "undercurl" },
+          hints = { "undercurl" },
+          warnings = { "undercurl" },
+          information = { "undercurl" },
         },
       },
-      navic = { enabled = true, custom_bg = 'lualine' },
+      navic = { enabled = true, custom_bg = "lualine" },
       neotest = true,
       neotree = true,
       noice = true,
@@ -311,15 +311,15 @@ now(function()
       which_key = true,
     },
   })
-  vim.cmd.colorscheme('catppuccin')
+  vim.cmd.colorscheme("catppuccin")
 
-  require('barbecue').setup()
+  require("barbecue").setup()
 end)
 
 later(function()
-  add('ahmedkhalf/project.nvim')
+  add("ahmedkhalf/project.nvim")
 
-  require('project_nvim').setup({
+  require("project_nvim").setup({
     manual_mode = false,
     detection_methods = { "lsp", "pattern" },
     patterns = {
@@ -339,9 +339,9 @@ later(function()
     scope_chdir = "global",
     datapath = vim.fn.stdpath("data"),
   })
-  require('project_nvim.utils.history').read_projects_from_history()
+  require("project_nvim.utils.history").read_projects_from_history()
 
-  vim.keymap.set('n', '<leader>pp', function()
+  Config.nmap("<leader>fp", function()
     local history = require("project_nvim.utils.history")
     local pick = require("mini.pick")
     local function choose_action(item)
@@ -361,7 +361,7 @@ later(function()
         name = "Projects"
       }
     })
-  end, { desc = 'Pick Project' })
+  end, "Project")
 end)
 
 later(function()
@@ -373,15 +373,20 @@ later(function()
   })
 
   Config.nmap("<C-_>", "<cmd>FloatermToggle<cr>", "Open floating terminal")
+  Config.nmap("<C-/>", "<cmd>FloatermToggle<cr>", "Open floating terminal")
 end)
 
 later(function ()
   add({
-    source = "MeanderingProgrammer/render-markdown.nvim",
-    depends = {"nvim-treesitter/nvim-treesitter"},
+    source = "OXY2DEV/markview.nvim"
   })
-
-  require("render-markdown").setup({
-    completions = { lsp = { enabled = true } },
+  require("markview").setup({
+    preview = {
+      enable = false,
+      enable_hybrid_mode = false,
+      icon_provider = "mini",
+    }
   })
+  Config.nmap("<leader>pt", "<cmd>Markview Toggle<cr>", "Toggle Markview")
+  Config.nmap("<leader>ps", "<cmd>Markview splitToggle<cr>", "Toggle Markview (Split)")
 end)

@@ -186,6 +186,7 @@ Config.install_ts = {
   'gosum',
   'haskell',
   'heex',
+  'html',
   'javascript',
   'json',
   'json5',
