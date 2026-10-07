@@ -61,7 +61,13 @@ now_if_args(function()
       table.insert(filetypes, ft)
     end
   end
-  local ts_start = function(ev) vim.treesitter.start(ev.buf) end
+  local ts_start = function(ev)
+    vim.treesitter.start(ev.buf)
+    -- Use tree-sitter indent where no filetype indent script sets one
+    if vim.bo[ev.buf].indentexpr == "" then
+      vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end
   Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
 end)
 
