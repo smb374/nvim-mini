@@ -373,10 +373,6 @@ end)
 
 later(function()
   add({ 'https://github.com/MeanderingProgrammer/render-markdown.nvim' })
-  require("render-markdown").setup({
-    -- Start unrendered, like the previous markview setup
-    enabled = false,
-  })
+  require("render-markdown").setup({})
   Config.nmap("<leader>pt", "<cmd>RenderMarkdown buf_toggle<cr>", "Toggle markdown render")
-  Config.nmap("<leader>ps", "<cmd>RenderMarkdown preview<cr>", "Markdown render preview (split)")
 end)
