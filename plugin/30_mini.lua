@@ -24,8 +24,7 @@
 -- - Step one enables everything that is needed for first draw with `now()`.
 --   Sometimes needed only if Neovim is started as `nvim -- path/to/file`.
 -- - Everything else is delayed until the first draw with `later()`.
-local now, later = MiniDeps.now, MiniDeps.later
-local now_if_args = Config.now_if_args
+local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
 -- Step one ===================================================================
 -- Enable 'miniwinter' color scheme. It comes with 'mini.nvim' and uses 'mini.hues'.
@@ -113,6 +112,19 @@ now(function() require('mini.sessions').setup() end)
 -- - `:h MiniStarter-example-config` - non-default config examples
 -- - `:h MiniStarter-lifecycle` - how to work with Starter buffer
 now(function() require('mini.starter').setup() end)
+
+-- Statuscolumn. Sets `:h 'statuscolumn'` for improved window's left column.
+-- Example usage:
+-- - Shows differently in active and inactive windows. By default, with separator
+--   and dimmed respectively.
+-- - Reorders main sections (line number, folds, and signs) for a more efficient
+--   use of space.
+-- - Shows extra indication for virtual and wrapped lines.
+--
+-- See also:
+-- - `:h MiniStatuscolumn.config` - general overview of available configuration.
+-- - `:h MiniStatuscolumn.gen_content.main()` - simplified content customization.
+-- now(function() require('mini.statuscolumn').setup() end)
 
 -- Statusline. Sets `:h 'statusline'` to show more info in a line below window.
 -- Example usage:
@@ -229,8 +241,8 @@ now_if_args(function()
   -- - `g?` to see available bookmarks
   local add_marks = function()
     MiniFiles.set_bookmark('c', vim.fn.stdpath('config'), { desc = 'Config' })
-    local minideps_plugins = vim.fn.stdpath('data') .. '/site/pack/deps/opt'
-    MiniFiles.set_bookmark('p', minideps_plugins, { desc = 'Plugins' })
+    local vimpack_plugins = vim.fn.stdpath('data') .. '/site/pack/core/opt'
+    MiniFiles.set_bookmark('p', vimpack_plugins, { desc = 'Plugins' })
     MiniFiles.set_bookmark('w', vim.fn.getcwd, { desc = 'Working directory' })
   end
   Config.new_autocmd('User', 'MiniFilesExplorerOpen', add_marks, 'Add bookmarks')
@@ -393,16 +405,16 @@ later(function()
     -- Explicitly opt-in for set of common keys to trigger clue window
     triggers = {
       { mode = { 'n', 'x' }, keys = '<Leader>' }, -- Leader triggers
-      { mode = 'n',          keys = '\\' },       -- mini.basics
+      { mode =   'n',        keys = '\\' },       -- mini.basics
       { mode = { 'n', 'x' }, keys = '[' },        -- mini.bracketed
       { mode = { 'n', 'x' }, keys = ']' },
-      { mode = 'i',          keys = '<C-x>' },    -- Built-in completion
+      { mode =   'i',        keys = '<C-x>' },    -- Built-in completion
       { mode = { 'n', 'x' }, keys = 'g' },        -- `g` key
       { mode = { 'n', 'x' }, keys = "'" },        -- Marks
       { mode = { 'n', 'x' }, keys = '`' },
       { mode = { 'n', 'x' }, keys = '"' },        -- Registers
       { mode = { 'i', 'c' }, keys = '<C-r>' },
-      { mode = 'n',          keys = '<C-w>' },    -- Window commands
+      { mode =   'n',        keys = '<C-w>' },    -- Window commands
       { mode = { 'n', 'x' }, keys = 's' },        -- `s` key (mini.surround, etc.)
       { mode = { 'n', 'x' }, keys = 'z' },        -- `z` key
     },
@@ -430,7 +442,7 @@ later(function() require('mini.cmdline').setup() end)
 -- - `:h MiniColors.interactive()` - interactively tweak color scheme
 -- - `:h MiniColors-recipes` - common recipes to use during interactive tweaking
 -- - `:h MiniColors.convert()` - convert between color spaces
--- - `:h MiniColors-color-spaces` - list of supported color sapces
+-- - `:h MiniColors-color-spaces` - list of supported color spaces
 --
 -- It is not enabled by default because it is not really needed on a daily basis.
 -- Uncomment next line (use `gcc`) to enable.
@@ -556,6 +568,31 @@ later(function()
   })
 end)
 
+-- Customizable user input. Improves how Neovim and plugins ask for input.
+-- By default shows a floating window with the input prompt as title. Window
+-- position depends on the input scope: at cursor, window or editor bottom left.
+--
+-- When asked for input:
+-- - Type it. Note: this is not a regular Insert mode, but rather a customizable
+--   and comprehensive Command-line mode emulation (it allows returning a value).
+-- - Press `<Tab>` to show completion, `<C-p>` - previous history entry.
+-- - Press `<CR>` to accept or `<Esc>` to cancel.
+--
+-- Example usage (usually works together with other plugins and modules):
+-- - `saiwf` and type a function name to wrap a word with 'mini.surround'
+-- - `<Leader>lr` and type a new value to use with LSP rename
+-- - `<Leader>fg` + `<C-o>` and type a custom filter glob for `grep_live` picker
+-- - `:h vim.ui.input()` - implemented with 'mini.input'.
+--   Like after typing `<Leader>sn` to create a session asks for its name.
+--
+-- See also:
+-- - `:h MiniInput.default_key()` - default special keys available when typing
+-- - `:h MiniInput-examples` - general customization examples
+-- - `:h MiniInput.gen_view` - bundled view customizations (adjust how floating
+--   window is shown or use statusline/tabline/winbar/virtual text)
+-- - `:h MiniInput-lifecycle` - details about how a custom mode emulation works
+later(function() require('mini.input').setup() end)
+
 -- Jump to next/previous single character. It implements "smarter `fFtT` keys"
 -- (see `:h f`) that work across multiple lines, start "jumping mode", and
 -- highlight all target matches. Example usage:
@@ -625,9 +662,9 @@ later(function()
   -- Map built-in navigation characters to force map refresh
   for _, key in ipairs({ 'n', 'N', '*', '#' }) do
     local rhs = key
-        -- Also open enough folds when jumping to the next match
-        .. 'zv'
-        .. '<Cmd>lua MiniMap.refresh({}, { lines = false, scrollbar = false })<CR>'
+      -- Also open enough folds when jumping to the next match
+      .. 'zv'
+      .. '<Cmd>lua MiniMap.refresh({}, { lines = false, scrollbar = false })<CR>'
     vim.keymap.set('n', key, rhs)
   end
 end)
