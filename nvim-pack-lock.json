@@ -17,7 +17,7 @@
       "src": "https://github.com/sindrets/diffview.nvim"
     },
     "floaterm": {
-      "rev": "fc2efaf25eeefcb33177d5807c0c745e125cf293",
+      "rev": "4f24e90f1281d6a848c96adb6501573c8e0e406b",
       "src": "https://github.com/nvzone/floaterm"
     },
     "friendly-snippets": {
@@ -33,7 +33,7 @@
       "src": "https://github.com/folke/lazydev.nvim"
     },
     "mason-lspconfig.nvim": {
-      "rev": "e17625cdc8c2650787467398e02c5d63a2cde966",
+      "rev": "a338f44149f5673882c32629697d67b0c0547aec",
       "src": "https://github.com/williamboman/mason-lspconfig.nvim"
     },
     "mason.nvim": {
@@ -41,15 +41,15 @@
       "src": "https://github.com/williamboman/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "9ee72c26ac1440ee6c95ce708c1d739684be316a",
+      "rev": "ed8683521996657ce774e5eec9d2f9b1b5ecef82",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "neogit": {
-      "rev": "70708be9664b7fcdd010eb07bdc3ebc9311c2027",
+      "rev": "832a2db084ac25c2801fd73a3fab58f3c82ed2ec",
       "src": "https://github.com/NeogitOrg/neogit"
     },
     "nvim-lspconfig": {
-      "rev": "c59fc922f718fa055f69f5f3bc888f23211571eb",
+      "rev": "77b7432d4770d23b277d37923e5a08a442d8bb07",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-navic": {
@@ -57,7 +57,7 @@
       "src": "https://github.com/SmiteshP/nvim-navic"
     },
     "nvim-treesitter": {
-      "rev": "1a4f47b03dfe92d28de7d5654c67327ef008c9e6",
+      "rev": "a2f694478be07f89c2d03cc17858a8745a400c4b",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-textobjects": {
@@ -77,7 +77,7 @@
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "volt": {
-      "rev": "620de1321f275ec9d80028c68d1b88b409c0c8b1",
+      "rev": "4351c5cd790a0d39491c4d5c75dd62d7db3d3414",
       "src": "https://github.com/nvzone/volt"
     }
   }
