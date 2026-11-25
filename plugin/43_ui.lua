@@ -1,7 +1,6 @@
 Config.now(function()
   vim.pack.add({
-    'https://github.com/SmiteshP/nvim-navic',
-    { src = 'https://github.com/utilyre/barbecue.nvim', name = 'barbecue' },
+    'https://github.com/Bekaboo/dropbar.nvim',
     { src = 'https://github.com/catppuccin/nvim', name = 'catppuccin' },
   })
   require("catppuccin").setup({
@@ -11,6 +10,7 @@ Config.now(function()
       alpha = true,
       cmp = true,
       dashboard = true,
+      dropbar = { enabled = true, color_mode = true },
       flash = true,
       gitsigns = true,
       headlines = true,
@@ -32,7 +32,6 @@ Config.now(function()
           information = { "undercurl" },
         },
       },
-      navic = { enabled = true, custom_bg = "lualine" },
       neotest = true,
       neotree = true,
       noice = true,
@@ -45,6 +44,4 @@ Config.now(function()
     },
   })
   vim.cmd.colorscheme("catppuccin")
-
-  require("barbecue").setup()
 end)

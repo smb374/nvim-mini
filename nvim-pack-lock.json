@@ -1,9 +1,5 @@
 {
   "plugins": {
-    "barbecue": {
-      "rev": "3e31404f0b93a2c30d151abf0648650ac811c664",
-      "src": "https://github.com/utilyre/barbecue.nvim"
-    },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
       "src": "https://github.com/saghen/blink.cmp",
@@ -20,6 +16,10 @@
     "diffview.nvim": {
       "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
       "src": "https://github.com/sindrets/diffview.nvim"
+    },
+    "dropbar.nvim": {
+      "rev": "75df03973f3a06a85300bc8ca1f9f68e935cb78e",
+      "src": "https://github.com/Bekaboo/dropbar.nvim"
     },
     "floaterm": {
       "rev": "4f24e90f1281d6a848c96adb6501573c8e0e406b",
@@ -56,10 +56,6 @@
     "nvim-lspconfig": {
       "rev": "77b7432d4770d23b277d37923e5a08a442d8bb07",
       "src": "https://github.com/neovim/nvim-lspconfig"
-    },
-    "nvim-navic": {
-      "rev": "455808fd0fae06e6d70fadfd61432275db8f34ce",
-      "src": "https://github.com/SmiteshP/nvim-navic"
     },
     "nvim-treesitter": {
       "rev": "a2f694478be07f89c2d03cc17858a8745a400c4b",
