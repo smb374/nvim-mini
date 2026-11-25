@@ -1,7 +1,4 @@
--- Language data: servers and tree-sitter parsers. Used by 'plugin/40_treesitter.lua'
--- and 'plugin/41_lsp.lua'.
 return {
-  -- Servers installed outside of Mason
   external_server = {
     'clangd',
     'gleam',
@@ -12,7 +9,6 @@ return {
     'rust_analyzer',
   },
 
-  -- Servers installed by Mason
   install_server = {
     'bashls',
     'cssls',
@@ -34,7 +30,6 @@ return {
     'zls',
   },
 
-  -- Tree-sitter parsers
   install_ts = {
     'bash',
     'bibtex',

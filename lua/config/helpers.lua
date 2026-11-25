@@ -1,16 +1,9 @@
--- Helpers shared by config files, exposed through the global `Config` table.
--- Requires 'mini.nvim' to be added already (see 'init.lua').
-
--- Custom autocommand group and helper to create an autocommand.
--- See `:h nvim_create_augroup()`, `:h nvim_create_autocmd()`.
 local gr = vim.api.nvim_create_augroup('custom-config', {})
 Config.new_autocmd = function(event, pattern, callback, desc)
   local opts = { group = gr, pattern = pattern, callback = callback, desc = desc }
   vim.api.nvim_create_autocmd(event, opts)
 end
 
--- `vim.pack.add()` hook helper. Plugin data is passed as argument to the
--- callback. See `:h vim.pack-events`. Example: 'plugin/40_treesitter.lua'.
 Config.on_packchanged = function(plugin_name, kinds, callback, desc)
   local f = function(ev)
     local name, kind = ev.data.spec.name, ev.data.kind
@@ -21,11 +14,6 @@ Config.on_packchanged = function(plugin_name, kinds, callback, desc)
   Config.new_autocmd('PackChanged', '*', f, desc)
 end
 
--- Loading helpers used to organize config into fail-safe parts:
--- - `now` - execute immediately (colorscheme, statusline, etc.).
--- - `later` - execute a bit later.
--- - `now_if_args` - `now` if Neovim started with file arguments, else `later`.
--- See `:h MiniMisc.safely()`.
 local misc = require('mini.misc')
 Config.now = function(f) misc.safely('now', f) end
 Config.later = function(f) misc.safely('later', f) end

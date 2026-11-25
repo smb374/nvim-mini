@@ -1,8 +1,6 @@
--- Other plugins: snippets, git, projects, terminal, markdown.
 local add = vim.pack.add
 local later = Config.later
 
--- Snippet collection used by 'mini.snippets'. See `:h MiniSnippets.gen_loader.from_lang()`.
 later(function() add({ 'https://github.com/rafamadriz/friendly-snippets' }) end)
 
 later(function()

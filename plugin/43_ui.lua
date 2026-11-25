@@ -1,4 +1,3 @@
--- Colorscheme and winbar.
 Config.now(function()
   vim.pack.add({
     'https://github.com/SmiteshP/nvim-navic',

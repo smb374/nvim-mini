@@ -1,7 +1,3 @@
--- Language servers: Neovim is the client (`:h vim.lsp`); server configs come
--- from 'nvim-lspconfig', installs from Mason. Per-server overrides live in
--- 'after/lsp/'. Server lists are in 'lua/config/languages.lua'.
--- Troubleshooting: `:checkhealth vim.lsp`.
 Config.now_if_args(function()
   vim.pack.add({
     'https://github.com/folke/lazydev.nvim',
@@ -14,7 +10,6 @@ Config.now_if_args(function()
 
   require("lazydev").setup({
     library = {
-      -- Load luvit types when the `vim.uv` word is found
       { path = "${3rd}/luv/library", words = { "vim%.uv" } },
     },
   })

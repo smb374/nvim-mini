@@ -1,14 +1,10 @@
--- Formatting with 'conform.nvim'. See `:h Conform`, `:h conform-formatters`.
 Config.later(function()
   vim.pack.add({ 'https://github.com/stevearc/conform.nvim' })
 
   require('conform').setup({
     default_format_opts = {
-      -- Allow formatting from LSP server if no dedicated formatter is available
       lsp_format = 'fallback',
     },
-    -- Map of filetype to formatters. Make sure the CLI tool is available.
-    -- formatters_by_ft = { lua = { 'stylua' } },
   })
   vim.api.nvim_create_user_command("Format", function(args)
     local range = nil
@@ -23,7 +19,6 @@ Config.later(function()
   end, { range = true })
   vim.api.nvim_create_user_command("FormatDisable", function(args)
     if args.bang then
-      -- FormatDisable! will disable formatting just for this buffer
       vim.b.disable_autoformat = true
     else
       vim.g.disable_autoformat = true

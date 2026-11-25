@@ -1,18 +1,8 @@
--- User commands for `vim.pack`, modeled after 'mini.deps' ones. Use `!` to
--- skip confirmation. Plugin names are optional and complete with <Tab>.
--- - `:PackAdd user/repo` - add plugin to current session (install if needed).
--- - `:PackUpdate[!] [name ...]` - update plugins.
--- - `:PackUpdateOffline[!] [name ...]` - same, but without downloading.
--- - `:PackRestore[!] [name ...]` - revert plugins to lockfile revisions.
--- - `:PackClean[!]` - delete plugins not added to current session.
--- - `:PackDel[!] name ...` - delete plugins (`!` allows active ones).
--- - `:PackShowLog` - open update log.
 local pack_names = function() return vim.tbl_map(function(p) return p.spec.name end, vim.pack.get(nil, { info = false })) end
 local pack_complete = function(lead)
   return vim.tbl_filter(function(n) return vim.startswith(n, lead) end, pack_names())
 end
 local pack_cmd = function(name, impl, opts)
-  -- Default: optional plugin names with completion, and `!` to force
   opts = opts or { nargs = '*', bang = true, complete = pack_complete }
   vim.api.nvim_create_user_command(name, impl, opts)
 end
