@@ -5,6 +5,7 @@ Config.now_if_args(function()
     'https://github.com/williamboman/mason-lspconfig.nvim',
     'https://github.com/neovim/nvim-lspconfig',
     'https://github.com/MysticalDevil/inlay-hints.nvim',
+    { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range('1.*') },
   })
   local languages = require('config.languages')
 
@@ -14,32 +15,11 @@ Config.now_if_args(function()
     },
   })
 
-  local capabilities = vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(),
-    MiniCompletion.get_lsp_capabilities())
-
-  capabilities = vim.tbl_deep_extend("force", capabilities, {
+  local capabilities = require('blink.cmp').get_lsp_capabilities({
     textDocument = {
       foldingRange = {
         dynamicRegistration = false,
         lineFoldingOnly = true,
-      },
-      completion = {
-        completionItem = {
-          snippetSupport = true,
-          commitCharactersSupport = true,
-          deprecatedSupport = true,
-          preselectSupport = true,
-          tagSupport = { valueSet = { 1 } },
-          insertReplaceSupport = true,
-          resolveSupport = {
-            properties = {
-              "documentation",
-              "detail",
-              "additionalTextEdits",
-            },
-          },
-          labelDetailsSupport = true,
-        },
       },
     },
   })
