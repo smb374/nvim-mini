@@ -1,0 +1,4 @@
+if vim.g.neovide then
+  vim.o.guifont = "Maple Mono NL NF CN:h12"
+  vim.g.neovide_cursor_animation_length = 0
+end

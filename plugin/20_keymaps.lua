@@ -133,7 +133,7 @@ nmap_leader('ek', edit_plugin_file('20_keymaps.lua'),       'Keymaps config')
 nmap_leader('em', edit_plugin_file('30_mini.lua'),          'MINI config')
 nmap_leader('en', '<Cmd>lua MiniNotify.show_history()<CR>', 'Notifications')
 nmap_leader('eo', edit_plugin_file('10_options.lua'),       'Options config')
-nmap_leader('ep', edit_plugin_file('40_plugins.lua'),       'Plugins config')
+nmap_leader('ep', edit_plugin_file('44_tools.lua'),         'Plugins config')
 nmap_leader('eq', explore_quickfix,                         'Quickfix list')
 nmap_leader('eQ', explore_locations,                        'Location list')
 
